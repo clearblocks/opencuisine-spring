@@ -10,8 +10,11 @@ public class RabbitMQService {
 
     private final RabbitTemplate rabbitTemplate;
 
-    public RabbitMQService(RabbitTemplate rabbitTemplate) {
+    private final OpenRecipeService openRecipeService;
+
+    public RabbitMQService(RabbitTemplate rabbitTemplate, OpenRecipeService openRecipeService) {
         this.rabbitTemplate = rabbitTemplate;
+        this.openRecipeService = openRecipeService;
     }
 
 //    @Bean
@@ -36,6 +39,7 @@ public class RabbitMQService {
     @RabbitListener(queues = "opencuisine", messageConverter = "jsonConverter")
     public void processMessage(final OpenRecipeRequest openRecipeRequest) {
         System.out.println(String.format("Received message: %s", openRecipeRequest.getIngredients()));
+        openRecipeService.getOpenRecipeSuggestion(openRecipeRequest);
     }
 
     public void publishOpenRecipeMessage(final OpenRecipeRequest openRecipeRequest) {

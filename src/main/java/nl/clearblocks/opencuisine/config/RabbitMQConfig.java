@@ -1,4 +1,4 @@
-package nl.clearblocks.opencuisine.rabbitmq;
+package nl.clearblocks.opencuisine.config;
 
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -16,24 +16,12 @@ public class RabbitMQConfig {
     static final String queueName = "opencuisine";
 
     @Bean
-    ConnectionFactory connectionFactory() {
-        CachingConnectionFactory connectionFactory = new CachingConnectionFactory("localhost");
-        connectionFactory.setUsername("admin");
-        connectionFactory.setPassword("admin");
+    ConnectionFactory connectionFactory(AppProperties appProperties) {
+        CachingConnectionFactory connectionFactory = new CachingConnectionFactory(appProperties.getRabbitMqHost());
+        connectionFactory.setUsername(appProperties.getRabbitMqUserName());
+        connectionFactory.setPassword(appProperties.getRabbitMqPassword());
         return connectionFactory;
     }
-
-//    @Bean
-//    SimpleMessageListenerContainer container(ConnectionFactory connectionFactory) { //,
-//        // MessageListenerAdapter listenerAdapter) {
-//
-//        System.out.println("Calling container");
-//        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
-//        container.setConnectionFactory(connectionFactory);
-//        container.setQueueNames(queueName);
-//        // container.setMessageListener(listenerAdapter);
-//        return container;
-//    }
 
     @Bean
     RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
