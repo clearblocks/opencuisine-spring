@@ -22,7 +22,7 @@ public class OpenRecipeService {
     }
 
     public void getOpenRecipeSuggestion(final OpenRecipeRequest openRecipeRequest) {
-        String ingredients = String.join(", ", openRecipeRequest.getIngredients());
+        String ingredients = String.join(", ", openRecipeRequest.ingredients());
         ArrayList<ChatMessage> messages = new ArrayList<>();
         messages.add(new ChatMessage("system", systemMessage));
         messages.add(new ChatMessage("user", String.format(userMessage, ingredients)));

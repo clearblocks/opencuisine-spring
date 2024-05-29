@@ -38,7 +38,7 @@ public class RabbitMQService {
 
     @RabbitListener(queues = "opencuisine", messageConverter = "jsonConverter")
     public void processMessage(final OpenRecipeRequest openRecipeRequest) {
-        System.out.println(String.format("Received message: %s", openRecipeRequest.getIngredients()));
+        System.out.println(String.format("Received message: %s", openRecipeRequest.ingredients()));
         openRecipeService.getOpenRecipeSuggestion(openRecipeRequest);
     }
 
